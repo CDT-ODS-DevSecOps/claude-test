@@ -1,0 +1,26 @@
+# Environment files with secrets
+.env
+.env.local
+.env.production
+.env.*
+!.env.example
+
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+*.log
+
+# FTP/SFTP configuration with credentials
+filezilla.xml.local
+*.credentials
+*.secrets
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Static files (collected)
+staticfiles/
