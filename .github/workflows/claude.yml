@@ -5,17 +5,18 @@ on:
     types: [created]
   pull_request_review_comment:
     types: [created]
-  issues:
-    types: [opened, assigned]
   pull_request_review:
     types: [submitted]
+  issues:
+    types: [opened, assigned]
 
 permissions:
   contents: write
   pull-requests: write
   issues: write
-  id-token: write
   actions: read
+  id-token: write
+  security-events: read
 
 jobs:
   claude:
@@ -27,9 +28,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: anthropics/claude-code-action@v1
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          claude_args: "--model claude-haiku-4-5 --max-turns 10"
+
+          additional_permissions: |
+            actions: read
+            security-events: read
+
+          claude_args: |
+            --model claude-opus-4-5
+            --max-turns 15
+            --system-prompt "You are assisting with secure code review and vulnerability remediation. Review the PR or issue context, identify security vulnerabilities, explain the risk, make minimal safe code changes when requested, run only allowed validation commands, and create a clear summary of changes. Do not expose secrets. Do not make production-impacting changes without explaining them."
+            --allowedTools "Bash(gh pr create:*),Bash(gh pr edit:*),Bash(gh pr view:*),Bash(gh issue view:*),Bash(git status:*),Bash(git diff:*),Bash(npm test:*),Bash(npm run test:*),Bash(npm audit:*)"
+            --disallowedTools "WebSearch"
