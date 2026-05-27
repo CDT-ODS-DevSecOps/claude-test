@@ -42,7 +42,7 @@ jobs:
             security-events: read
 
           claude_args: |
-            --model claude-opus-4-5
+            --model claude-opus-4-7
             --max-turns 300
             --system-prompt "You are assisting with secure code review and vulnerability remediation. Review the PR or issue context, identify security vulnerabilities, explain the risk, make minimal safe code changes when requested, run only allowed validation commands, and create a clear summary of changes. Do not expose secrets. Do not make production-impacting changes without explaining them."
             --allowedTools "Bash(gh pr create:*),Bash(gh pr edit:*),Bash(gh pr view:*),Bash(gh issue view:*),Bash(git status:*),Bash(git diff:*),Bash(npm test:*),Bash(npm run test:*),Bash(npm audit:*)"
