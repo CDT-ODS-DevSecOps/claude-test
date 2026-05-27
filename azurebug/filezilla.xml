@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+    SECURITY WARNING: This is a TEMPLATE file only.
+    DO NOT commit actual credentials to version control.
+
+    Instructions:
+    1. Copy this file to a location outside the repository
+    2. Replace placeholder values with actual credentials
+    3. Add the actual config file path to .gitignore
+    4. Use a dedicated FTP user with minimal required permissions (NOT root)
+-->
+<FileZilla3>
+    <Servers>
+        <Server>
+            <Host>example.com</Host>
+            <Port>21</Port>
+            <Protocol>0</Protocol>
+            <Type>0</Type>
+            <!-- SECURITY: Use a dedicated limited-privilege user, NOT root -->
+            <User>FTP_USER_PLACEHOLDER</User>
+            <!-- SECURITY: Password should be configured outside version control -->
+            <Pass>FTP_PASSWORD_PLACEHOLDER</Pass>
+            <Account>example.com</Account>
+            <Logontype>4</Logontype>
+            <TimezoneOffset>0</TimezoneOffset>
+            <PasvMode>MODE_DEFAULT</PasvMode>
+            <MaximumMultipleConnections>0</MaximumMultipleConnections>
+            <EncodingType>Auto</EncodingType>
+            <BypassProxy>0</BypassProxy>
+            <Name>example.com</Name>
+            <Comments />
+            <LocalDir />
+            <RemoteDir />
+            <SyncBrowsing>0</SyncBrowsing>
+        </Server>
+    </Servers>
+</FileZilla3>
