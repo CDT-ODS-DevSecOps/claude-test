@@ -1,47 +1,48 @@
 {
-    "autoExec" : true,
-    "autoExpand" : true,
-    "autocompletionMode" : 1,
-    "batchSize" : 50,
-    "connections" : [
-     {
-      "connectionName" : "New Connection",
-      "credentials" : [
-       {
-        "databaseName" : "main",
-        "enabled" : false,
-        "userName" : "mongouser",
-        "userPassword" : "mongopass"
-       }
-      ],
-      "defaultDatabase" : "main",
-      "serverHost" : "localhost",
-      "serverPort" : 27017,
-      "sshAuthMethod" : 0,
-      "sshHost" : "localhost",
-      "sshPassphrase" : "SSHPass123",
-      "sshPort" : 22,
-      "sshPrivateKey" : "",
-      "sshPublicKey" : "",
-      "sshUserName" : "root",
-      "sshUserPassword" : "roboMongoSSHPass",
-      "sslEnabled" : false,
-      "sslPemKeyFile" : ""
-     }
+    "_comment": "SECURITY NOTE: This is a TEMPLATE only. Do NOT commit real credentials (DB users, SSH passwords, passphrases, or private keys). Configure these locally outside of version control. Treat any previously committed values in this file as compromised and rotate them. Prefer SSH key-based auth over passwords, and prefer TLS-enabled MongoDB connections.",
+    "autoExec": true,
+    "autoExpand": true,
+    "autocompletionMode": 1,
+    "batchSize": 50,
+    "connections": [
+        {
+            "connectionName": "Template Connection",
+            "credentials": [
+                {
+                    "databaseName": "DB_NAME_PLACEHOLDER",
+                    "enabled": false,
+                    "userName": "DB_USER_PLACEHOLDER",
+                    "userPassword": ""
+                }
+            ],
+            "defaultDatabase": "DB_NAME_PLACEHOLDER",
+            "serverHost": "DB_HOST_PLACEHOLDER",
+            "serverPort": 27017,
+            "sshAuthMethod": 1,
+            "sshHost": "SSH_HOST_PLACEHOLDER",
+            "sshPassphrase": "",
+            "sshPort": 22,
+            "sshPrivateKey": "",
+            "sshPublicKey": "",
+            "sshUserName": "SSH_USER_PLACEHOLDER",
+            "sshUserPassword": "",
+            "sslEnabled": true,
+            "sslPemKeyFile": ""
+        }
     ],
-    "disableConnectionShortcuts" : false,
-    "lineNumbers" : true,
-    "loadMongoRcJs" : true,
-    "style" : "Native",
-    "timeZone" : 0,
-    "toolbars" :  {
-     "connect" : true,
-     "exec" : true,
-     "explorer" : true,
-     "logs" : false,
-     "open_save" : true
+    "disableConnectionShortcuts": false,
+    "lineNumbers": true,
+    "loadMongoRcJs": true,
+    "style": "Native",
+    "timeZone": 0,
+    "toolbars": {
+        "connect": true,
+        "exec": true,
+        "explorer": true,
+        "logs": false,
+        "open_save": true
     },
-    "uuidEncoding" : 0,
-    "version" : "1.0",
-    "viewMode" : 1
-   }
+    "uuidEncoding": 0,
+    "version": "1.0",
+    "viewMode": 1
+}

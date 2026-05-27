@@ -8,6 +8,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
+
+SECURITY: This file must never contain hardcoded secrets, database
+credentials, or production hostnames. Inject all sensitive values via
+environment variables (or a managed secret store).
 """
 
 import os
@@ -20,18 +24,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY: Secret key loaded from environment variable
-# Generate a new key with: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+# SECURITY: Secret key loaded from environment variable.
+# Generate a new key with:
+#   python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 if not SECRET_KEY:
     raise ValueError("DJANGO_SECRET_KEY environment variable is not set")
 
-# SECURITY: Debug mode controlled by environment variable (defaults to False)
+# SECURITY: Debug mode controlled by environment variable (defaults to False).
+# DEBUG=True must NEVER be enabled in production.
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-# SECURITY: Allowed hosts must be explicitly configured
-# Set DJANGO_ALLOWED_HOSTS as comma-separated list (e.g., "example.com,www.example.com")
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if os.environ.get('DJANGO_ALLOWED_HOSTS') else []
+# SECURITY: Allowed hosts must be explicitly configured (empty list when
+# DEBUG=False causes Django to reject all requests, which is the safe default).
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
+    if host.strip()
+]
 
 
 # Application definition
@@ -78,6 +88,9 @@ WSGI_APPLICATION = 'helloworld.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# NOTE: SQLite is suitable for local development only. Production deployments
+# should use a managed RDBMS (Postgres/MySQL) with credentials provided via
+# environment variables, never hardcoded.
 
 DATABASES = {
     'default': {
@@ -96,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 12},
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -110,13 +124,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
-USE_L10N = True
-
+# USE_L10N is deprecated in Django 4.0+ and removed in 5.0; localization is
+# always enabled. Setting it raises a RemovedInDjango50Warning, so we drop it.
 USE_TZ = True
 
 
@@ -125,3 +136,34 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+# ---------------------------------------------------------------------------
+# Security hardening (applied when DEBUG=False, i.e. production / staging)
+# ---------------------------------------------------------------------------
+# These settings address common findings from `python manage.py check --deploy`
+# and align with the Django deployment security checklist.
+if not DEBUG:
+    # Force HTTPS: redirect plain HTTP and tell browsers to only use HTTPS.
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # HSTS: 1 year, including subdomains, and eligible for browser preload.
+    SECURE_HSTS_SECONDS = 31_536_000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # Cookies: marked Secure (HTTPS-only) and not accessible to JS.
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_SAMESITE = 'Lax'
+
+    # MIME-sniffing and clickjacking protection.
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+
+    # Referrer policy: don't leak full URLs cross-origin.
+    SECURE_REFERRER_POLICY = 'same-origin'

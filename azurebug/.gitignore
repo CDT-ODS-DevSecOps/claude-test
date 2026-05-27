@@ -16,6 +16,37 @@ filezilla.xml.local
 *.credentials
 *.secrets
 
+# Database client / data files that frequently leak credentials or PII.
+# Templates are allowed via explicit re-includes below.
+pgpass
+pgpass.*
+.pgpass
+*.pgpass
+dump.sql
+*-dump.sql
+db-dump-*.sql
+dbeaver-data-sources.xml
+!dbeaver-data-sources.xml.template
+robomongo.json
+!robomongo.json.template
+mongoid.local.yml
+
+# Private keys / certificates
+*.pem
+*.key
+*.pfx
+*.p12
+id_rsa
+id_ed25519
+id_ecdsa
+*.crt
+*.cer
+
+# Cloud / vendor credential files
+.aws/credentials
+.azure/credentials
+gcloud-service-key*.json
+
 # IDE
 .idea/
 .vscode/

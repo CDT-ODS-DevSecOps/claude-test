@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    SECURITY NOTE: This is a TEMPLATE file. Do NOT commit real credentials.
+    - Never set `save-password="true"` for shared/committed DBeaver configs.
+    - Configure host/port/user via environment or per-developer local files
+      that are excluded by .gitignore.
+    - Use a least-privilege application user, never a DBA/root account.
+-->
 <data-sources>
-	<data-source id="oracle_thin-168ec697f43-515be69f6924b104" provider="oracle" driver="oracle_thin" name="user" save-password="true" read-only="false">
-		<connection host="localhost" port="1521" server="localhost" database="orcl" url="jdbc:oracle:thin:@//localhost:1521/orcl" user="user" password="password"/>
+	<data-source id="oracle_thin-template" provider="oracle" driver="oracle_thin" name="oracle-template" save-password="false" read-only="false">
+		<connection host="DB_HOST_PLACEHOLDER" port="1521" server="DB_HOST_PLACEHOLDER" database="DB_NAME_PLACEHOLDER" url="jdbc:oracle:thin:@//DB_HOST_PLACEHOLDER:1521/DB_NAME_PLACEHOLDER" user="DB_USER_PLACEHOLDER" password=""/>
 	</data-source>
 </data-sources>

@@ -1,4 +1,21 @@
-production: 
-  clients: 
-    default: 
-      uri: "mongodb://testuser:testpass@ds048537.mongolab.com:48537/main"
+# SECURITY NOTE:
+# Do NOT hardcode database credentials in this file or commit a populated
+# copy to version control. Pull connection details from environment variables
+# (e.g., via ERB interpolation, dotenv, or a secret manager such as AWS
+# Secrets Manager / Azure Key Vault / HashiCorp Vault).
+#
+# If credentials were previously committed here, treat them as compromised
+# and rotate them immediately.
+
+production:
+  clients:
+    default:
+      # Provide the full URI through MONGODB_URI, e.g.:
+      #   mongodb+srv://<user>:<pass>@cluster.example.net/<db>?retryWrites=true&w=majority
+      uri: "<%= ENV.fetch('MONGODB_URI') %>"
+      options:
+        # Enforce TLS in production.
+        ssl: true
+        # Reject the connection if credentials are missing rather than
+        # falling back to an unauthenticated connection.
+        server_selection_timeout: 5
